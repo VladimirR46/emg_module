@@ -1,7 +1,7 @@
 import os, re, json, asyncio
 from typing import Dict, List, Optional
 from mne_lsl.stream import StreamLSL
-from mne_lsl import lsl as mlsl
+from pylsl import resolve_streams
 import logging
 import imufusion
 import numpy as np
@@ -120,7 +120,7 @@ class Sensor:
             logger.info("Shutdown complete")
 
 def discover_sensors() -> List[Sensor]:
-    streams = mlsl.resolve_streams(2.0)
+    streams = resolve_streams(2.0)
     sensors: Dict[str, Sensor] = {}
     for s in streams:
         try:
