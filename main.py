@@ -1,7 +1,7 @@
 import os, re, json, asyncio
 from typing import Dict, List, Optional
-from mne_lsl.stream import StreamLSL
-from pylsl import resolve_streams
+#from mne_lsl.stream import StreamLSL
+#from pylsl import resolve_streams
 import logging
 import imufusion
 import numpy as np
@@ -44,7 +44,7 @@ class AsyncTCP:
 class Sensor:
     def __init__(self, serial: str, name: str, source_id: str):
         self.serial = serial
-        self.stream = StreamLSL(bufsize=10.0, name=name, stype="Data", source_id=source_id)
+        self.stream = None#StreamLSL(bufsize=10.0, name=name, stype="Data", source_id=source_id)
         self.stream.connect(acquisition_delay=0.01, processing_flags="all", timeout=4.0)
         #self.stream.filter(l_freq=None, h_freq=40.0)
         self.above = False
@@ -137,17 +137,18 @@ def discover_sensors() -> List[Sensor]:
 
 async def main():
     tcp = AsyncTCP("127.0.0.1", 8080)
-    sensors = discover_sensors()
-    if not sensors:
-        print("No EMGsens-*-Data streams found.")
-        return
-    print("Sensors:", [s.serial for s in sensors])
+    print('hello')
+    # sensors = discover_sensors()
+    # if not sensors:
+    #     print("No EMGsens-*-Data streams found.")
+    #     return
+    # print("Sensors:", [s.serial for s in sensors])
 
-    tasks = [asyncio.create_task(s.run(tcp)) for s in sensors]
-    try:
-        await asyncio.gather(*tasks)
-    except asyncio.CancelledError:
-        pass
+    # tasks = [asyncio.create_task(s.run(tcp)) for s in sensors]
+    # try:
+    #     await asyncio.gather(*tasks)
+    # except asyncio.CancelledError:
+    #     pass
 
 if __name__ == "__main__":
     try:
